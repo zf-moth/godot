@@ -30,6 +30,8 @@
 
 #include "navigation_mesh.h"
 
+#include "scene/resources/mesh.h"
+
 #ifdef DEBUG_ENABLED
 #include "servers/navigation_server_3d.h"
 #endif // DEBUG_ENABLED

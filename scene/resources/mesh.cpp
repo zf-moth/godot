@@ -34,8 +34,10 @@
 #include "core/templates/pair.h"
 #include "scene/resources/surface_tool.h"
 
+#ifndef _3D_DISABLED
 #include "scene/resources/3d/concave_polygon_shape_3d.h"
 #include "scene/resources/3d/convex_polygon_shape_3d.h"
+#endif // _3D_DISABLED
 
 void MeshConvexDecompositionSettings::set_max_concavity(real_t p_max_concavity) {
 	max_concavity = CLAMP(p_max_concavity, 0.001, 1.0);
@@ -519,6 +521,7 @@ Vector<Face3> Mesh::get_surface_faces(int p_surface) const {
 	return Vector<Face3>();
 }
 
+#ifndef _3D_DISABLED
 Ref<ConvexPolygonShape3D> Mesh::create_convex_shape(bool p_clean, bool p_simplify) const {
 	if (p_simplify) {
 		Ref<MeshConvexDecompositionSettings> settings = Ref<MeshConvexDecompositionSettings>();
@@ -578,6 +581,7 @@ Ref<ConcavePolygonShape3D> Mesh::create_trimesh_shape() const {
 	shape->set_faces(face_points);
 	return shape;
 }
+#endif // _3D_DISABLED
 
 Ref<Mesh> Mesh::create_outline(float p_margin) const {
 	Array arrays;
@@ -894,6 +898,7 @@ void Mesh::clear_cache() const {
 	debug_lines.clear();
 }
 
+#ifndef _3D_DISABLED
 Vector<Ref<Shape3D>> Mesh::convex_decompose(const Ref<MeshConvexDecompositionSettings> &p_settings) const {
 	ERR_FAIL_NULL_V(convex_decomposition_function, Vector<Ref<Shape3D>>());
 
@@ -930,6 +935,7 @@ Vector<Ref<Shape3D>> Mesh::convex_decompose(const Ref<MeshConvexDecompositionSet
 
 	return ret;
 }
+#endif // _3D_DISABLED
 
 int Mesh::get_builtin_bind_pose_count() const {
 	return 0;
@@ -1993,6 +1999,7 @@ AABB ArrayMesh::get_custom_aabb() const {
 	return custom_aabb;
 }
 
+#ifndef _3D_DISABLED
 void ArrayMesh::regen_normal_maps() {
 	if (surfaces.size() == 0) {
 		return;
@@ -2011,10 +2018,12 @@ void ArrayMesh::regen_normal_maps() {
 		surfs.write[i]->commit(Ref<ArrayMesh>(this));
 	}
 }
+#endif // _3D_DISABLED
 
 //dirty hack
 bool (*array_mesh_lightmap_unwrap_callback)(float p_texel_size, const float *p_vertices, const float *p_normals, int p_vertex_count, const int *p_indices, int p_index_count, const uint8_t *p_cache_data, bool *r_use_cache, uint8_t **r_mesh_cache, int *r_mesh_cache_size, float **r_uv, int **r_vertex, int *r_vertex_count, int **r_index, int *r_index_count, int *r_size_hint_x, int *r_size_hint_y) = nullptr;
 
+#ifndef _3D_DISABLED
 struct ArrayMeshLightmapSurface {
 	Ref<Material> material;
 	LocalVector<SurfaceTool::Vertex> vertices;
@@ -2222,6 +2231,7 @@ Error ArrayMesh::lightmap_unwrap_cached(const Transform3D &p_base_transform, flo
 
 	return OK;
 }
+#endif // _3D_DISABLED
 
 void ArrayMesh::set_shadow_mesh(const Ref<ArrayMesh> &p_mesh) {
 	shadow_mesh = p_mesh;
@@ -2257,12 +2267,14 @@ void ArrayMesh::_bind_methods() {
 	ClassDB::bind_method(D_METHOD("surface_find_by_name", "name"), &ArrayMesh::surface_find_by_name);
 	ClassDB::bind_method(D_METHOD("surface_set_name", "surf_idx", "name"), &ArrayMesh::surface_set_name);
 	ClassDB::bind_method(D_METHOD("surface_get_name", "surf_idx"), &ArrayMesh::surface_get_name);
+	ClassDB::bind_method(D_METHOD("create_outline", "margin"), &ArrayMesh::create_outline);
+#ifndef _3D_DISABLED
 	ClassDB::bind_method(D_METHOD("create_trimesh_shape"), &ArrayMesh::create_trimesh_shape);
 	ClassDB::bind_method(D_METHOD("create_convex_shape", "clean", "simplify"), &ArrayMesh::create_convex_shape, DEFVAL(true), DEFVAL(false));
-	ClassDB::bind_method(D_METHOD("create_outline", "margin"), &ArrayMesh::create_outline);
 	ClassDB::bind_method(D_METHOD("regen_normal_maps"), &ArrayMesh::regen_normal_maps);
 	ClassDB::set_method_flags(get_class_static(), _scs_create("regen_normal_maps"), METHOD_FLAGS_DEFAULT | METHOD_FLAG_EDITOR);
 	ClassDB::bind_method(D_METHOD("lightmap_unwrap", "transform", "texel_size"), &ArrayMesh::lightmap_unwrap);
+#endif // _3D_DISABLED
 	ClassDB::set_method_flags(get_class_static(), _scs_create("lightmap_unwrap"), METHOD_FLAGS_DEFAULT | METHOD_FLAG_EDITOR);
 	ClassDB::bind_method(D_METHOD("generate_triangle_mesh"), &ArrayMesh::generate_triangle_mesh);
 

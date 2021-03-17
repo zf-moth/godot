@@ -34,7 +34,9 @@
 #include "core/io/resource.h"
 #include "core/math/face3.h"
 #include "core/math/triangle_mesh.h"
+#ifndef _3D_DISABLED
 #include "scene/resources/3d/shape_3d.h"
+#endif // _3D_DISABLED
 #include "scene/resources/material.h"
 #include "servers/rendering_server.h"
 
@@ -194,9 +196,11 @@ public:
 
 	static ConvexDecompositionFunc convex_decomposition_function;
 
+#ifndef _3D_DISABLED
 	Vector<Ref<Shape3D>> convex_decompose(const Ref<MeshConvexDecompositionSettings> &p_settings) const;
 	Ref<ConvexPolygonShape3D> create_convex_shape(bool p_clean = true, bool p_simplify = false) const;
 	Ref<ConcavePolygonShape3D> create_trimesh_shape() const;
+#endif // _3D_DISABLED
 
 	virtual int get_builtin_bind_pose_count() const;
 	virtual Transform3D get_builtin_bind_pose(int p_index) const;
@@ -380,7 +384,9 @@ public:
 	AABB get_aabb() const override;
 	virtual RID get_rid() const override;
 
+#ifndef _3D_DISABLED
 	void regen_normal_maps();
+#endif // _3D_DISABLED
 
 	Error lightmap_unwrap(const Transform3D &p_base_transform = Transform3D(), float p_texel_size = 0.05);
 	Error lightmap_unwrap_cached(const Transform3D &p_base_transform, float p_texel_size, const Vector<uint8_t> &p_src_cache, Vector<uint8_t> &r_dst_cache, bool p_generate_cache = true);

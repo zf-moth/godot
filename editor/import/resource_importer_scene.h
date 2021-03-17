@@ -316,6 +316,7 @@ public:
 	virtual Node *import_scene(const String &p_path, uint32_t p_flags, const HashMap<StringName, Variant> &p_options, List<String> *r_missing_deps, Error *r_err = nullptr) override;
 };
 
+#ifndef _3D_DISABLED
 template <class M>
 Vector<Ref<Shape3D>> ResourceImporterScene::get_collision_shapes(const Ref<ImporterMesh> &p_mesh, const M &p_options, float p_applied_root_scale) {
 	ERR_FAIL_COND_V(p_mesh.is_null(), Vector<Ref<Shape3D>>());
@@ -496,5 +497,6 @@ Transform3D ResourceImporterScene::get_collision_shapes_transform(const M &p_opt
 	}
 	return transform;
 }
+#endif // _3D_DISABLED
 
 #endif // RESOURCE_IMPORTER_SCENE_H
