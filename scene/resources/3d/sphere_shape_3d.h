@@ -1,5 +1,5 @@
 /**************************************************************************/
-/*  box_shape_3d.h                                                        */
+/*  sphere_shape_3d.h                                                     */
 /**************************************************************************/
 /*                         This file is part of:                          */
 /*                             GODOT ENGINE                               */
@@ -28,32 +28,28 @@
 /* SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.                 */
 /**************************************************************************/
 
-#ifndef BOX_SHAPE_3D_H
-#define BOX_SHAPE_3D_H
+#ifndef SPHERE_SHAPE_3D_H
+#define SPHERE_SHAPE_3D_H
 
-#include "scene/resources/shape_3d.h"
+#include "scene/resources/3d/shape_3d.h"
 
-class BoxShape3D : public Shape3D {
-	GDCLASS(BoxShape3D, Shape3D);
-	Vector3 size;
+class SphereShape3D : public Shape3D {
+	GDCLASS(SphereShape3D, Shape3D);
+	float radius = 0.5f;
 
 protected:
 	static void _bind_methods();
-#ifndef DISABLE_DEPRECATED
-	bool _set(const StringName &p_name, const Variant &p_value);
-	bool _get(const StringName &p_name, Variant &r_property) const;
-#endif // DISABLE_DEPRECATED
 
 	virtual void _update_shape() override;
 
 public:
-	void set_size(const Vector3 &p_size);
-	Vector3 get_size() const;
+	void set_radius(float p_radius);
+	float get_radius() const;
 
 	virtual Vector<Vector3> get_debug_mesh_lines() const override;
 	virtual real_t get_enclosing_radius() const override;
 
-	BoxShape3D();
+	SphereShape3D();
 };
 
-#endif // BOX_SHAPE_3D_H
+#endif // SPHERE_SHAPE_3D_H
