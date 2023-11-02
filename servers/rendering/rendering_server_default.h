@@ -476,6 +476,8 @@ public:
 	FUNC2(voxel_gi_set_interior, RID, bool)
 	FUNC2(voxel_gi_set_use_two_bounces, RID, bool)
 
+	FUNC0(sdfgi_reset)
+
 	/* PARTICLES */
 
 #undef ServerName
@@ -893,6 +895,9 @@ public:
 	FUNC5(canvas_item_set_visibility_notifier, RID, bool, const Rect2 &, const Callable &, const Callable &)
 
 	FUNC6(canvas_item_set_canvas_group_mode, RID, CanvasGroupMode, float, bool, float, bool)
+
+	FUNC1(canvas_item_set_debug_redraw, bool)
+	FUNC0RC(bool, canvas_item_get_debug_redraw)
 
 	FUNCRIDSPLIT(canvas_light)
 
